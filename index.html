@@ -373,6 +373,7 @@
       font-size: 0.9rem;
       color: var(--accent);
       min-height: 20px;
+      text-align: center;
     }
   </style>
 </head>
@@ -549,7 +550,7 @@
   <script>
     // ==========================================
     // 🔑 WEB3FORMS CONFIGURATION
-    // Paste your Web3Forms access key here:
+    // Paste your Web3Forms access key below:
     // ==========================================
     const WEB3FORMS_ACCESS_KEY = "db3cb5c9-dd28-4fd2-b16e-744c6e1e9580";
 
@@ -689,7 +690,7 @@
       submitBtn.disabled = true;
       statusMsg.innerText = "Locking in our plans...";
 
-      // Automated background form submission
+      // Automated background form submission to your email
       if (WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== "PASTE_YOUR_ACCESS_KEY_HERE") {
         try {
           await fetch("https://api.web3forms.com/submit", {
