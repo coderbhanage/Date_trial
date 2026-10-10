@@ -3,585 +3,568 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>An Invitation for You ✨ | Let's Plan Our Date</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <title>Let's Plan Something Fun ✨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-            serif: ['"Playfair Display"', 'serif'],
-            mono: ['"Space Grotesk"', 'monospace'],
-          },
-          colors: {
-            champagne: {
-              50: '#fbfaf8',
-              100: '#f6f3ee',
-              200: '#ece5dc',
-              300: '#ded2c2',
-              400: '#cbb7a1',
-              500: '#b89d81',
-              600: '#a38466',
-            },
-            amberAccent: {
-              400: '#fbbf24',
-              500: '#f59e0b',
-              600: '#d97706',
-            }
-          },
-          boxShadow: {
-            'glow': '0 10px 30px -10px rgba(217, 119, 6, 0.25)',
-            'card': '0 20px 40px -15px rgba(20, 22, 24, 0.08)',
-          }
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card-bg: rgba(26, 29, 36, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #e5a96c;
+      --accent-glow: rgba(229, 169, 108, 0.35);
+      --accent-hover: #f0bd86;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 680px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 28px;
+      padding: 40px 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 32px 20px;
+        border-radius: 24px;
       }
     }
-  </script>
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: linear-gradient(135deg, #fdfbf7 0%, #f4efe6 50%, #eae3d7 100%);
-      min-height: 100vh;
-      color: #1e2022;
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(229, 169, 108, 0.12);
+      border: 1px solid rgba(229, 169, 108, 0.25);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-bottom: 20px;
     }
-    .glass-panel {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(222, 210, 194, 0.6);
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      line-height: 1.2;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .glass-input {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid #ded2c2;
+
+    @media (max-width: 600px) {
+      .title {
+        font-size: 2rem;
+      }
     }
-    .glass-input:focus {
-      border-color: #d97706;
-      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.5;
+      margin-bottom: 28px;
     }
-    .custom-selection:checked + .custom-card {
-      border-color: #d97706;
-      background: #fdfaf5;
-      box-shadow: 0 8px 24px -6px rgba(217, 119, 6, 0.22);
+
+    .dare-banner {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px dashed rgba(239, 68, 68, 0.35);
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      color: #fca5a5;
+      margin-bottom: 32px;
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    .hero-buttons {
+      position: relative;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      min-height: 120px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 14px;
+      padding: 14px 28px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-yes {
+      background: var(--accent);
+      color: #0f1115;
+      box-shadow: 0 8px 24px var(--accent-glow);
+      z-index: 2;
+    }
+
+    .btn-yes:hover {
+      background: var(--accent-hover);
       transform: translateY(-2px);
+      box-shadow: 0 12px 28px var(--accent-glow);
+    }
+
+    .btn-no {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      transition: transform 0.15s ease-out, background 0.2s ease;
+      z-index: 10;
+    }
+
+    .planner-view, .summary-view {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-group {
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .section-label {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: rgba(229, 169, 108, 0.15);
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .chip-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.92rem;
+      font-weight: 500;
+      text-align: left;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .chip-btn:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .chip-btn.selected {
+      background: rgba(229, 169, 108, 0.15);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(229, 169, 108, 0.15);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+    }
+
+    .dress-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dress-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .dress-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .dress-card-info {
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .dress-card-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .dress-card-desc {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+
+    .dress-card.selected {
+      border-color: var(--accent);
+      background: rgba(229, 169, 108, 0.15);
+      box-shadow: 0 0 16px rgba(229, 169, 108, 0.15);
+    }
+
+    .datetime-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .datetime-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-field {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border 0.2s ease;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+    }
+
+    select.input-field option {
+      background: #1a1d24;
+      color: #ffffff;
+    }
+
+    .notes-input {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .ticket-card {
+      background: rgba(15, 17, 21, 0.9);
+      border: 1px solid rgba(229, 169, 108, 0.3);
+      border-radius: 20px;
+      padding: 24px;
+      margin: 24px 0;
+      text-align: left;
+      position: relative;
+    }
+
+    .ticket-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+      padding-bottom: 8px;
+    }
+
+    .ticket-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .ticket-label {
+      color: var(--text-muted);
+    }
+
+    .ticket-val {
+      font-weight: 600;
+      color: #ffffff;
+      text-align: right;
+    }
+
+    .status-msg {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: var(--accent);
+      min-height: 20px;
     }
   </style>
 </head>
-<body class="selection:bg-amber-100 selection:text-amber-900 min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+<body>
+  <canvas id="bg-canvas"></canvas>
 
-  <!-- Ambient Golden Stardust Canvas (Classy & Modern, No hearts) -->
-  <canvas id="ambient-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+  <!-- STEP 1: HERO VIEW -->
+  <div class="container" id="hero-view">
+    <div class="badge">✨ VIP Invitation</div>
+    <h1 class="title">Would you go on a date with me?</h1>
+    <p class="subtitle">Let's plan something fun together!</p>
 
-  <!-- Top Bar -->
-  <header class="relative z-20 w-full max-w-4xl mx-auto px-5 py-5 sm:py-7 flex items-center justify-between">
-    <div class="flex items-center gap-2.5">
-      <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
-      <span class="font-mono text-xs sm:text-sm font-semibold tracking-widest uppercase text-stone-600">Special Delivery</span>
+    <div class="dare-banner" id="dare-text">
+      🎯 Dare to click No? (Though we both know you want to click Yes 😉)
     </div>
-    <div class="flex items-center gap-3">
-      <button id="sound-btn" onclick="toggleAudio()" class="text-xs font-semibold bg-white/85 hover:bg-white text-stone-700 px-3.5 py-1.5 rounded-full shadow-sm border border-stone-200 transition-all flex items-center gap-1.5 active:scale-95">
-        <span id="sound-icon">🔔</span>
-        <span id="sound-text">Sound On</span>
-      </button>
+
+    <div class="hero-buttons" id="btn-container">
+      <button class="btn btn-yes" id="yes-btn">Yes, let's plan! ✨</button>
+      <button class="btn btn-no" id="no-btn">No</button>
     </div>
-  </header>
+  </div>
 
-  <main class="relative z-10 w-full max-w-2xl mx-auto px-4 py-4 sm:py-8 flex-grow flex flex-col justify-center items-center">
+  <!-- STEP 2: PLANNER VIEW -->
+  <div class="container planner-view" id="planner-view">
+    <div class="badge">📍 The Itinerary</div>
+    <h1 class="title">Let's Design Our Day</h1>
+    <p class="subtitle">Pick what sounds best to you, and we'll lock it in.</p>
 
-    <!-- SECTION 1: THE INVITATION & PLAYFUL DARE -->
-    <section id="section-invite" class="w-full transition-all duration-700 ease-out flex flex-col items-center">
-      <div class="glass-panel rounded-3xl p-7 sm:p-12 shadow-card text-center w-full relative overflow-hidden border border-champagne-200">
-        
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-50 text-amber-700 text-xs sm:text-sm font-semibold tracking-wide border border-amber-200/60 mb-5">
-          <span>✨</span> An Official Proposal
-        </div>
-
-        <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 leading-tight mb-4">
-          Would you go on a date with me?
-        </h1>
-        
-        <p class="text-stone-600 text-sm sm:text-base max-w-md mx-auto mb-6 leading-relaxed">
-          Let’s plan something fun together! A proper adventure, great dinner, and zero dull moments.
-        </p>
-
-        <!-- Dare Callout Box -->
-        <div class="bg-stone-50/90 border border-stone-200 rounded-2xl p-3.5 sm:p-4 max-w-md mx-auto mb-8 shadow-sm">
-          <p class="text-xs sm:text-sm font-medium text-stone-700 flex items-center justify-center gap-1.5">
-            <span class="text-base">🎯</span> 
-            <span>Dare to click <strong>No</strong>? (Though we both know you want to click <strong>Yes</strong> 😉)</span>
-          </p>
-        </div>
-
-        <!-- Runaway Interaction Area -->
-        <div id="btn-arena" class="relative min-h-[140px] flex items-center justify-center gap-4 sm:gap-6 flex-wrap">
-          <!-- YES BUTTON -->
-          <button id="btn-yes" onclick="handleAcceptInvite()" class="cursor-pointer group relative z-10 bg-stone-900 hover:bg-stone-800 text-amber-50 font-semibold py-3.5 px-8 sm:px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 text-base flex items-center gap-2">
-            <span>Yes, let’s do it! ✨</span>
-            <span class="group-hover:translate-x-1 transition-transform">→</span>
-          </button>
-
-          <!-- NO BUTTON (Runaway Dodging Button) -->
-          <button id="btn-no" class="cursor-pointer bg-white hover:bg-stone-100 text-stone-600 font-medium py-3 px-7 rounded-full shadow-sm border border-stone-300 transition-all duration-150 text-sm" style="position: relative;">
-            No 😅
-          </button>
-        </div>
-
-        <!-- Teasing Quotes -->
-        <div id="tease-quote" class="text-xs sm:text-sm font-semibold text-amber-700 h-6 mt-3 opacity-0 transition-opacity duration-200">
-          "Haha nice try! You almost had it 😜"
-        </div>
-
+    <!-- Activity -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>1. Afternoon Adventure</span>
+        <span class="section-tag">Pick One</span>
       </div>
-    </section>
-
-    <!-- SECTION 2: ADVENTURE & DINNER PLANNER -->
-    <section id="section-planner" class="w-full hidden opacity-0 transition-all duration-700 ease-out">
-      <div class="glass-panel rounded-3xl p-6 sm:p-10 shadow-card w-full border border-champagne-200">
-        
-        <!-- Header -->
-        <div class="text-center mb-8">
-          <div class="inline-block px-3.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-mono font-semibold tracking-wider uppercase mb-2">
-            ✨ Date Accepted
-          </div>
-          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-stone-900">
-            Let's Plan Our Adventure
-          </h2>
-          <p class="text-stone-500 text-xs sm:text-sm mt-1 max-w-sm mx-auto">
-            Choose what sounds like the best time, and let's craft the perfect evening.
-          </p>
-        </div>
-
-        <form id="plan-form" onsubmit="handleFormSubmission(event)" class="space-y-8">
-          
-          <!-- STEP 1: MAIN ADVENTURE ACTIVITY -->
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <label class="text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                <span>🎯</span> 1. The Main Adventure (Before Dinner)
-              </label>
-              <span class="text-[11px] font-semibold text-stone-500">Pick one</span>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <!-- Arcade / Bowling / Mini Golf -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="activity" value="Arcade Games, Mini Golf or Bowling" checked class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3.5 bg-white hover:border-amber-400 transition-all flex items-start gap-3">
-                  <span class="text-2xl mt-0.5">🕹️</span>
-                  <div>
-                    <span class="text-xs sm:text-sm font-bold text-stone-800 block">Arcade / Mini Golf / Bowling</span>
-                    <span class="text-[11px] text-stone-500 block mt-0.5">Friendly competition & high energy fun</span>
-                  </div>
-                </div>
-              </label>
-
-              <!-- Art Gallery / Workshop -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="activity" value="Art Gallery, Museum or Creative Workshop" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3.5 bg-white hover:border-amber-400 transition-all flex items-start gap-3">
-                  <span class="text-2xl mt-0.5">🎨</span>
-                  <div>
-                    <span class="text-xs sm:text-sm font-bold text-stone-800 block">Gallery, Museum or Workshop</span>
-                    <span class="text-[11px] text-stone-500 block mt-0.5">Culture, cool exhibits & aesthetic wandering</span>
-                  </div>
-                </div>
-              </label>
-
-              <!-- Sunset Walk / Scenic Views -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="activity" value="Sunset Walk & Scenic Views / Park Stroll" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3.5 bg-white hover:border-amber-400 transition-all flex items-start gap-3">
-                  <span class="text-2xl mt-0.5">🌅</span>
-                  <div>
-                    <span class="text-xs sm:text-sm font-bold text-stone-800 block">Sunset Walk & Scenic Views</span>
-                    <span class="text-[11px] text-stone-500 block mt-0.5">Golden hour stroll & great conversations</span>
-                  </div>
-                </div>
-              </label>
-
-              <!-- Cozy Coffee & Bookshop -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="activity" value="Cozy Coffee & Bookshop Browsing / Board Games" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3.5 bg-white hover:border-amber-400 transition-all flex items-start gap-3">
-                  <span class="text-2xl mt-0.5">☕</span>
-                  <div>
-                    <span class="text-xs sm:text-sm font-bold text-stone-800 block">Cozy Coffee & Bookshop / Games</span>
-                    <span class="text-[11px] text-stone-500 block mt-0.5">Browsing interesting reads & relaxed vibes</span>
-                  </div>
-                </div>
-              </label>
-
-              <!-- Live Comedy / Music -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="activity" value="Live Comedy Show / Live Music" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3.5 bg-white hover:border-amber-400 transition-all flex items-start gap-3">
-                  <span class="text-2xl mt-0.5">🎙️</span>
-                  <div>
-                    <span class="text-xs sm:text-sm font-bold text-stone-800 block">Live Comedy or Live Music</span>
-                    <span class="text-[11px] text-stone-500 block mt-0.5">Good laughs or chill acoustic sets</span>
-                  </div>
-                </div>
-              </label>
-
-              <!-- Wildcard Spontaneous -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="activity" value="Spontaneous Mystery Adventure" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3.5 bg-white hover:border-amber-400 transition-all flex items-start gap-3">
-                  <span class="text-2xl mt-0.5">🎲</span>
-                  <div>
-                    <span class="text-xs sm:text-sm font-bold text-stone-800 block">Something Spontaneous</span>
-                    <span class="text-[11px] text-stone-500 block mt-0.5">Surprise destination picked on the spot</span>
-                  </div>
-                </div>
-              </label>
-            </div>
-          </div>
-
-          <!-- STEP 2: MANDATORY DINNER CUISINE -->
-          <div>
-            <div class="flex items-center justify-between mb-3">
-              <label class="text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                <span>🍽️</span> 2. Dinner is mandatory — What are you craving?
-              </label>
-              <span class="text-[11px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">Mandatory</span>
-            </div>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              <!-- Italian -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="cuisine" value="Italian (Handmade pasta & wine)" checked class="hidden custom-selection" onchange="toggleCustomCuisine(false)">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3 sm:p-4 text-center bg-white hover:border-amber-400 transition-all flex flex-col items-center">
-                  <span class="text-2xl mb-1.5">🍝</span>
-                  <span class="text-xs sm:text-sm font-bold text-stone-800">Italian</span>
-                  <span class="text-[10px] text-stone-500 mt-0.5">Pasta & warm vibes</span>
-                </div>
-              </label>
-
-              <!-- Thai -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="cuisine" value="Thai (Curry, noodles & street flavors)" class="hidden custom-selection" onchange="toggleCustomCuisine(false)">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3 sm:p-4 text-center bg-white hover:border-amber-400 transition-all flex flex-col items-center">
-                  <span class="text-2xl mb-1.5">🍜</span>
-                  <span class="text-xs sm:text-sm font-bold text-stone-800">Thai</span>
-                  <span class="text-[10px] text-stone-500 mt-0.5">Savory, fresh & spicy</span>
-                </div>
-              </label>
-
-              <!-- Mexican -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="cuisine" value="Mexican (Tacos, guac & cocktails)" class="hidden custom-selection" onchange="toggleCustomCuisine(false)">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3 sm:p-4 text-center bg-white hover:border-amber-400 transition-all flex flex-col items-center">
-                  <span class="text-2xl mb-1.5">🌮</span>
-                  <span class="text-xs sm:text-sm font-bold text-stone-800">Mexican</span>
-                  <span class="text-[10px] text-stone-500 mt-0.5">Gourmet tacos & drinks</span>
-                </div>
-              </label>
-
-              <!-- Other / Custom -->
-              <label class="cursor-pointer relative">
-                <input type="radio" name="cuisine" value="Custom Suggestion" id="cuisine-custom-radio" class="hidden custom-selection" onchange="toggleCustomCuisine(true)">
-                <div class="custom-card border border-stone-200 rounded-2xl p-3 sm:p-4 text-center bg-white hover:border-amber-400 transition-all flex flex-col items-center">
-                  <span class="text-2xl mb-1.5">✨</span>
-                  <span class="text-xs sm:text-sm font-bold text-stone-800">Other</span>
-                  <span class="text-[10px] text-stone-500 mt-0.5">Any suggestions?</span>
-                </div>
-              </label>
-            </div>
-
-            <!-- Custom cuisine input toggle -->
-            <div id="custom-cuisine-box" class="mt-2.5 hidden">
-              <input type="text" id="custom-cuisine-input" placeholder="What cuisine or place are you thinking? (e.g. Japanese, Mediterranean, Korean BBQ...)" class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-stone-800 outline-none transition">
-            </div>
-          </div>
-
-          <!-- STEP 3: DATE & TIME (STARTING FROM 4:00 PM FOR ACTIVITY + DINNER) -->
-          <div>
-            <div class="flex items-center justify-between mb-2.5">
-              <label class="text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1.5">
-                <span>⏰</span> 3. Date & Start Time
-              </label>
-              <span class="text-[11px] text-stone-500">Starting from 4 PM for activity + dinner</span>
-            </div>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label for="date-input" class="text-[11px] font-semibold text-stone-500 uppercase tracking-wide block mb-1">Select Day</label>
-                <input type="date" id="date-input" required class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-stone-800 outline-none transition font-sans">
-              </div>
-
-              <div>
-                <label for="time-input" class="text-[11px] font-semibold text-stone-500 uppercase tracking-wide block mb-1">Kick-off Time</label>
-                <div class="relative">
-                  <select id="time-input" required class="w-full glass-input rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-stone-800 outline-none transition bg-white appearance-none">
-                    <option value="4:00 PM">4:00 PM (Ideal for full afternoon adventure + dinner)</option>
-                    <option value="4:30 PM">4:30 PM (Great afternoon light & pacing)</option>
-                    <option value="5:00 PM" selected>5:00 PM (Sunset timing into dinner)</option>
-                    <option value="5:30 PM">5:30 PM (Quick activity & early dinner)</option>
-                    <option value="6:00 PM">6:00 PM (Late afternoon / evening start)</option>
-                    <option value="Flexible / Anytime after 4 PM">Flexible (Anytime after 4:00 PM)</option>
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-stone-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- STEP 4: DRESS CODE WITH PHOTOS (CASUALS, SEMI-FORMALS, COZY & LOW KEY, YOU PICK I MATCH) -->
-          <div>
-            <label class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-800 mb-3 flex items-center gap-1.5">
-              <span>👗</span> 4. Dress Code & Vibe
-            </label>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              
-              <!-- 1. Casuals -->
-              <label class="cursor-pointer relative block">
-                <input type="radio" name="dresscode" value="Casuals (Clean relaxed streetwear/jeans & cool sneakers)" checked class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl overflow-hidden bg-white hover:border-amber-400 transition-all flex flex-col h-full shadow-sm">
-                  <div class="h-32 w-full overflow-hidden relative bg-stone-100">
-                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Casuals" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.src='https://placehold.co/600x300/e2d9cc/44403c?text=Casuals'">
-                    <span class="absolute bottom-2 left-2 bg-stone-900/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-mono">Casuals</span>
-                  </div>
-                  <div class="p-3">
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs sm:text-sm font-bold text-stone-800">Casuals</span>
-                      <span class="text-xs text-amber-600 font-semibold">Effortless</span>
-                    </div>
-                    <p class="text-[11px] text-stone-500 mt-0.5">Clean denim, relaxed streetwear, and cool comfortable sneakers.</p>
-                  </div>
-                </div>
-              </label>
-
-              <!-- 2. Semi-Formals -->
-              <label class="cursor-pointer relative block">
-                <input type="radio" name="dresscode" value="Semi-Formals (Smart, stylish, elevated casual/blazer or chic outfit)" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl overflow-hidden bg-white hover:border-amber-400 transition-all flex flex-col h-full shadow-sm">
-                  <div class="h-32 w-full overflow-hidden relative bg-stone-100">
-                    <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=600&q=80" alt="Semi-Formals" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.src='https://placehold.co/600x300/e2d9cc/44403c?text=Semi-Formals'">
-                    <span class="absolute bottom-2 left-2 bg-stone-900/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-mono">Semi-Formals</span>
-                  </div>
-                  <div class="p-3">
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs sm:text-sm font-bold text-stone-800">Semi-Formals</span>
-                      <span class="text-xs text-stone-500 font-semibold">Elevated</span>
-                    </div>
-                    <p class="text-[11px] text-stone-500 mt-0.5">Smart, sharp evening fit, chic blazer or elegant restaurant dress.</p>
-                  </div>
-                </div>
-              </label>
-
-              <!-- 3. Cozy and Low Key -->
-              <label class="cursor-pointer relative block">
-                <input type="radio" name="dresscode" value="Cozy and Low Key (Warm knits, sweater weather & maximum comfort)" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl overflow-hidden bg-white hover:border-amber-400 transition-all flex flex-col h-full shadow-sm">
-                  <div class="h-32 w-full overflow-hidden relative bg-stone-100">
-                    <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80" alt="Cozy and Low Key" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.src='https://placehold.co/600x300/e2d9cc/44403c?text=Cozy+Fit'">
-                    <span class="absolute bottom-2 left-2 bg-stone-900/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-mono">Cozy & Low Key</span>
-                  </div>
-                  <div class="p-3">
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs sm:text-sm font-bold text-stone-800">Cozy and Low Key</span>
-                      <span class="text-xs text-stone-500 font-semibold">Comfort</span>
-                    </div>
-                    <p class="text-[11px] text-stone-500 mt-0.5">Warm knit sweater, relaxed layers, zero fuss. Maximum comfort.</p>
-                  </div>
-                </div>
-              </label>
-
-              <!-- 4. You Pick, I Match -->
-              <label class="cursor-pointer relative block">
-                <input type="radio" name="dresscode" value="You Pick, I Match (Wear whatever you love, I'll match your energy)" class="hidden custom-selection">
-                <div class="custom-card border border-stone-200 rounded-2xl overflow-hidden bg-white hover:border-amber-400 transition-all flex flex-col h-full shadow-sm">
-                  <div class="h-32 w-full overflow-hidden relative bg-stone-100">
-                    <img src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&w=600&q=80" alt="You Pick I Match" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" loading="lazy" onerror="this.src='https://placehold.co/600x300/e2d9cc/44403c?text=You+Pick+I+Match'">
-                    <span class="absolute bottom-2 left-2 bg-stone-900/80 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-md font-mono">You Pick, I Match</span>
-                  </div>
-                  <div class="p-3">
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs sm:text-sm font-bold text-stone-800">You Pick, I Match</span>
-                      <span class="text-xs text-amber-600 font-semibold">Chameleon</span>
-                    </div>
-                    <p class="text-[11px] text-stone-500 mt-0.5">Put together your favorite look, and I guarantee I will match your vibe.</p>
-                  </div>
-                </div>
-              </label>
-
-            </div>
-          </div>
-
-          <!-- STEP 5: SPECIAL REQUESTS / SECRET SNACKS -->
-          <div>
-            <label for="extra-notes" class="block text-xs sm:text-sm font-bold uppercase tracking-wider text-stone-800 mb-1.5 flex items-center gap-1.5">
-              <span>💬</span> 5. Any special requests, secret snacks, or dietary notes?
-            </label>
-            <textarea id="extra-notes" rows="2" placeholder="e.g. Need boba after, prefer cozy corner booths, vegetarian, favorite treats..." class="w-full glass-input rounded-xl p-3 text-xs sm:text-sm text-stone-800 outline-none transition resize-none"></textarea>
-          </div>
-
-          <!-- Submit Button -->
-          <div class="pt-2 text-center">
-            <button type="submit" class="w-full sm:w-auto bg-stone-900 hover:bg-stone-800 text-amber-50 font-bold py-3.5 px-10 rounded-full shadow-lg hover:shadow-glow transition-all duration-300 text-sm sm:text-base tracking-wide flex items-center justify-center gap-2 mx-auto">
-              <span>Lock In Our Plan ✨</span>
-            </button>
-          </div>
-
-        </form>
-
+      <div class="options-grid" id="adventure-options">
+        <button class="chip-btn" data-val="Arcade & Games">🎮 Arcade / Mini Golf</button>
+        <button class="chip-btn" data-val="Art Museum & Workshop">🎨 Gallery / Workshop</button>
+        <button class="chip-btn" data-val="Sunset Walk & Scenery">🌅 Sunset Walk & Views</button>
+        <button class="chip-btn" data-val="Cozy Coffee & Board Games">☕ Cozy Coffee & Games</button>
+        <button class="chip-btn" data-val="Live Music or Comedy">🎭 Live Comedy / Music</button>
+        <button class="chip-btn" data-val="Surprise Me / Spontaneous">✨ Surprise Me</button>
       </div>
-    </section>
+    </div>
 
-    <!-- SECTION 3: VIP PASS / ITINERARY TICKET -->
-    <section id="section-ticket" class="w-full hidden opacity-0 transition-all duration-700 ease-out">
-      <div class="max-w-md mx-auto">
-        
-        <!-- Modern Card Itinerary -->
-        <div id="itinerary-card" class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-stone-200 relative">
-          
-          <!-- Header Banner -->
-          <div class="bg-stone-900 p-6 text-stone-100 text-center relative overflow-hidden">
-            <div class="inline-block px-3 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-full text-[11px] font-mono tracking-widest uppercase mb-1.5">
-              Official Invitation Accepted
-            </div>
-            <h3 class="font-serif text-2xl font-bold tracking-tight text-white">Our Date Itinerary</h3>
-            <p class="text-xs text-stone-400 font-sans mt-0.5">Adventure + Mandatory Dinner · Reserved for Two</p>
-          </div>
-
-          <!-- Ticket Cutouts -->
-          <div class="relative bg-white py-2 flex items-center justify-between px-3">
-            <div class="w-5 h-5 bg-[#eae3d7] rounded-full -ml-5 border-r border-stone-200"></div>
-            <div class="border-b border-dashed border-stone-300 w-full mx-2"></div>
-            <div class="w-5 h-5 bg-[#eae3d7] rounded-full -mr-5 border-l border-stone-200"></div>
-          </div>
-
-          <!-- Key Details -->
-          <div class="p-6 space-y-4 text-stone-800 text-xs sm:text-sm">
-            <div class="flex justify-between items-start pb-2.5 border-b border-stone-100">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Adventure</span>
-              <span id="ticket-activity" class="font-bold text-stone-900 text-right max-w-[210px]">Arcade & Mini Golf</span>
-            </div>
-
-            <div class="flex justify-between items-start pb-2.5 border-b border-stone-100">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Mandatory Dinner</span>
-              <span id="ticket-cuisine" class="font-bold text-amber-800 text-right max-w-[210px]">Italian</span>
-            </div>
-
-            <div class="flex justify-between items-start pb-2.5 border-b border-stone-100">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Date & Kick-off</span>
-              <span id="ticket-datetime" class="font-bold text-stone-900 text-right">Upcoming</span>
-            </div>
-
-            <div class="flex justify-between items-start pb-2.5 border-b border-stone-100">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Dress Code</span>
-              <span id="ticket-dresscode" class="font-medium text-stone-700 text-right max-w-[210px]">Casuals</span>
-            </div>
-
-            <div id="ticket-note-container" class="pt-1 pb-1">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider block mb-1">Notes / Requests:</span>
-              <p id="ticket-note" class="text-xs bg-stone-50 p-3 rounded-xl border border-stone-200/70 text-stone-700 italic">
-                None specified
-              </p>
-            </div>
-
-            <div class="pt-3 flex items-center justify-between text-[11px] text-stone-400 font-mono">
-              <span>STATUS: LOCKED IN 🔒</span>
-              <span>READY FOR AN AWESOME TIME ✨</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Copy / Action Buttons -->
-        <div class="mt-6 flex flex-col gap-3 items-center">
-          <button id="copy-summary-btn" onclick="copyPlanToClipboard()" class="w-full bg-stone-900 hover:bg-stone-800 text-amber-100 font-bold py-3.5 px-6 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 text-sm active:scale-98">
-            <span>📋</span>
-            <span id="copy-btn-text">Copy Plan to Send to Me</span>
-          </button>
-          
-          <button onclick="editPlan()" class="text-xs text-stone-500 hover:text-stone-800 underline transition py-1">
-            Edit details / Change something
-          </button>
-        </div>
-
-        <!-- Custom Toast Notification -->
-        <div id="toast-notify" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-stone-900 text-white text-xs px-5 py-2.5 rounded-full shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-50">
-          Plan copied! Paste it in our chat ✨
-        </div>
-
+    <!-- Mandatory Dinner Cuisine -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>2. Dinner Cuisine</span>
+        <span class="section-tag">Mandatory</span>
       </div>
-    </section>
+      <div class="options-grid" id="cuisine-options">
+        <button class="chip-btn" data-val="Italian">🍝 Italian</button>
+        <button class="chip-btn" data-val="Thai">🍜 Thai</button>
+        <button class="chip-btn" data-val="Mexican">🌮 Mexican</button>
+        <button class="chip-btn" data-val="Other">✨ Other / Suggestion</button>
+      </div>
+      <div id="cuisine-custom-wrap" style="display: none; margin-top: 10px;">
+        <input type="text" id="cuisine-custom" class="input-field" placeholder="What cuisine are you craving?">
+      </div>
+    </div>
 
-  </main>
+    <!-- Date & Time (Starting from 4:00 PM) -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>3. When are you free?</span>
+        <span class="section-tag">Time</span>
+      </div>
+      <div class="datetime-row">
+        <div>
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px;">Select Date</label>
+          <input type="date" id="date-input" class="input-field">
+        </div>
+        <div>
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px;">Select Start Time</label>
+          <select id="time-input" class="input-field">
+            <option value="4:00 PM">4:00 PM (Full afternoon & dinner)</option>
+            <option value="4:30 PM">4:30 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+            <option value="5:30 PM">5:30 PM</option>
+            <option value="6:00 PM">6:00 PM</option>
+            <option value="Flexible">I'm flexible with timing</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-  <footer class="relative z-10 w-full text-center py-4 text-xs text-stone-400">
-    <p>Looking forward to a great time together ✨</p>
-  </footer>
+    <!-- Visual Dress Code -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>4. Dress Code Vibe</span>
+        <span class="section-tag">Style</span>
+      </div>
+      <div class="cards-grid" id="dress-options">
+        <div class="dress-card" data-val="Casuals">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80" alt="Casuals">
+          <div class="dress-card-info">
+            <div class="dress-card-title">Casuals</div>
+            <div class="dress-card-desc">Jeans & clean sneakers</div>
+          </div>
+        </div>
+        <div class="dress-card" data-val="Semi-Formals">
+          <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=400&q=80" alt="Semi Formals">
+          <div class="dress-card-info">
+            <div class="dress-card-title">Semi-Formals</div>
+            <div class="dress-card-desc">Elevated, chic & sharp</div>
+          </div>
+        </div>
+        <div class="dress-card" data-val="Cozy and low key">
+          <img src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=400&q=80" alt="Cozy">
+          <div class="dress-card-info">
+            <div class="dress-card-title">Cozy and low key</div>
+            <div class="dress-card-desc">Sweater weather comfort</div>
+          </div>
+        </div>
+        <div class="dress-card" data-val="You pick, I match">
+          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80" alt="Match">
+          <div class="dress-card-info">
+            <div class="dress-card-title">You pick, I match</div>
+            <div class="dress-card-desc">Whatever you feel best in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional Notes -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>5. Anything else I should know?</span>
+        <span class="section-tag" style="opacity: 0.7;">Optional</span>
+      </div>
+      <textarea id="notes-input" class="input-field notes-input" placeholder="Dietary restrictions, song requests, or fun ideas..."></textarea>
+    </div>
+
+    <button class="btn btn-yes" id="submit-plan-btn" style="width: 100%; padding: 16px;">
+      Lock In Our Date! 🚀
+    </button>
+    <div class="status-msg" id="status-msg"></div>
+  </div>
+
+  <!-- STEP 3: SUMMARY CONFIRMATION VIEW -->
+  <div class="container summary-view" id="summary-view">
+    <div class="badge">🎉 It's Official!</div>
+    <h1 class="title">Can't Wait!</h1>
+    <p class="subtitle">Your date plan has been locked in.</p>
+
+    <div class="ticket-card">
+      <div class="ticket-item">
+        <span class="ticket-label">Adventure</span>
+        <span class="ticket-val" id="res-adventure">-</span>
+      </div>
+      <div class="ticket-item">
+        <span class="ticket-label">Dinner Cuisine</span>
+        <span class="ticket-val" id="res-cuisine">-</span>
+      </div>
+      <div class="ticket-item">
+        <span class="ticket-label">Date & Time</span>
+        <span class="ticket-val" id="res-datetime">-</span>
+      </div>
+      <div class="ticket-item">
+        <span class="ticket-label">Dress Code</span>
+        <span class="ticket-val" id="res-dress">-</span>
+      </div>
+      <div class="ticket-item" id="res-notes-wrap" style="display:none;">
+        <span class="ticket-label">Notes</span>
+        <span class="ticket-val" id="res-notes">-</span>
+      </div>
+    </div>
+
+    <button class="btn btn-yes" id="copy-btn" style="width: 100%;">
+      📋 Copy Plan Summary
+    </button>
+  </div>
 
   <script>
-    /* Web Audio Sound Effects */
-    let audioContext = null;
-    let isSoundOn = true;
+    // ==========================================
+    // 🔑 WEB3FORMS CONFIGURATION
+    // Paste your Web3Forms access key here:
+    // ==========================================
+    const WEB3FORMS_ACCESS_KEY = "PASTE_YOUR_ACCESS_KEY_HERE";
 
-    function getAudioCtx() {
-      if (!audioContext) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        audioContext = new AudioContextClass();
-      }
-      if (audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-      return audioContext;
-    }
+    // Set default date to this upcoming Saturday
+    const dateInput = document.getElementById('date-input');
+    const today = new Date();
+    const daysUntilSat = (6 - today.getDay() + 7) % 7 || 7;
+    const nextSat = new Date(today);
+    nextSat.setDate(today.getDate() + daysUntilSat);
+    dateInput.value = nextSat.toISOString().split('T')[0];
 
-    function toggleAudio() {
-      isSoundOn = !isSoundOn;
-      const soundIcon = document.getElementById('sound-icon');
-      const soundText = document.getElementById('sound-text');
-      if (isSoundOn) {
-        soundIcon.textContent = '🔔';
-        soundText.textContent = 'Sound On';
-        playTone(587.33, 0.1);
-      } else {
-        soundIcon.textContent = '🔕';
-        soundText.textContent = 'Sound Off';
-      }
-    }
-
-    function playTone(freq = 440, length = 0.08) {
-      if (!isSoundOn) return;
-      try {
-        const ctx = getAudioCtx();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0.12, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + length);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + length);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    function playCelebrationChime() {
-      if (!isSoundOn) return;
-      // D Major warm sparkle chord
-      const chords = [587.33, 739.99, 880.00, 1174.66]; // D5, F#5, A5, D6
-      chords.forEach((hz, i) => {
-        setTimeout(() => playTone(hz, 0.3), i * 110);
-      });
-    }
-
-    /* Ambient Warm Stardust Canvas */
-    const canvas = document.getElementById('ambient-canvas');
+    // Background Canvas Particle Animation
+    const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
-    let sparkles = [];
+    let particles = [];
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -590,273 +573,185 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    class SparkleDust {
-      constructor() {
-        this.reset();
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.4 + 0.1
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(229, 169, 108, ${p.alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Runaway "No" Button Logic
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const dareText = document.getElementById('dare-text');
+
+    const darePhrases = [
+      "🎯 Nice try, but you can't click it! 😂",
+      "⚡ Faster than that! Bet you can't catch it.",
+      "😼 Just hit Yes already, it's right there!",
+      "💨 Still trying? I admire the persistence!",
+      "👀 We both know your finger is heading for Yes!"
+    ];
+    let dareIndex = 0;
+
+    function dodgeNoButton() {
+      const maxX = 130;
+      const maxY = 60;
+      const randX = (Math.random() - 0.5) * (maxX * 2);
+      const randY = (Math.random() - 0.5) * (maxY * 2);
+      noBtn.style.transform = `translate(${randX}px, ${randY}px)`;
+      dareText.innerText = darePhrases[dareIndex % darePhrases.length];
+      dareIndex++;
+    }
+
+    noBtn.addEventListener('mouseenter', dodgeNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dodgeNoButton();
+    });
+
+    // Yes Button Click Transition
+    yesBtn.addEventListener('click', () => {
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+      document.getElementById('hero-view').style.display = 'none';
+      document.getElementById('planner-view').style.display = 'block';
+    });
+
+    // Single-select helper for chips/cards
+    function setupSingleSelect(containerId, isCard = false) {
+      const container = document.getElementById(containerId);
+      const selector = isCard ? '.dress-card' : '.chip-btn';
+      container.addEventListener('click', (e) => {
+        const item = e.target.closest(selector);
+        if (!item) return;
+        container.querySelectorAll(selector).forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+
+        if (containerId === 'cuisine-options') {
+          const isOther = item.getAttribute('data-val') === 'Other';
+          document.getElementById('cuisine-custom-wrap').style.display = isOther ? 'block' : 'none';
+        }
+      });
+    }
+
+    setupSingleSelect('adventure-options');
+    setupSingleSelect('cuisine-options');
+    setupSingleSelect('dress-options', true);
+
+    // Select defaults
+    document.querySelector('#adventure-options .chip-btn').classList.add('selected');
+    document.querySelector('#cuisine-options .chip-btn').classList.add('selected');
+    document.querySelector('#dress-options .dress-card').classList.add('selected');
+
+    // Submit Plan Logic (Web3Forms API)
+    const submitBtn = document.getElementById('submit-plan-btn');
+    const statusMsg = document.getElementById('status-msg');
+
+    submitBtn.addEventListener('click', async () => {
+      const selectedAdv = document.querySelector('#adventure-options .chip-btn.selected')?.getAttribute('data-val') || 'Spontaneous';
+      let selectedCuisine = document.querySelector('#cuisine-options .chip-btn.selected')?.getAttribute('data-val') || 'Italian';
+      if (selectedCuisine === 'Other') {
+        const customInput = document.getElementById('cuisine-custom').value.trim();
+        if (customInput) selectedCuisine = customInput;
       }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.radius = Math.random() * 2 + 0.8;
-        this.vy = -(Math.random() * 0.35 + 0.1);
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.alpha = Math.random() * 0.45 + 0.15;
-      }
-      update() {
-        this.y += this.vy;
-        this.x += this.vx;
-        if (this.y < 0) {
-          this.y = canvas.height + 5;
-          this.x = Math.random() * canvas.width;
+      const selectedDate = document.getElementById('date-input').value;
+      const selectedTime = document.getElementById('time-input').value;
+      const selectedDress = document.querySelector('#dress-options .dress-card.selected')?.getAttribute('data-val') || 'Casuals';
+      const notes = document.getElementById('notes-input').value.trim();
+
+      submitBtn.disabled = true;
+      statusMsg.innerText = "Locking in our plans...";
+
+      // Automated background form submission
+      if (WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== "PASTE_YOUR_ACCESS_KEY_HERE") {
+        try {
+          await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              subject: "New Date Invitation Response! 🥂",
+              Adventure: selectedAdv,
+              Dinner_Cuisine: selectedCuisine,
+              Date: selectedDate,
+              Time: selectedTime,
+              Dress_Code: selectedDress,
+              Notes: notes || "None"
+            })
+          });
+        } catch (err) {
+          console.error("Form submission error:", err);
         }
       }
-      draw() {
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(217, 119, 6, ${this.alpha})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = 'rgba(245, 158, 11, 0.4)';
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < 35; i++) {
-      sparkles.push(new SparkleDust());
-    }
-
-    function renderSparkles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      sparkles.forEach(s => {
-        s.update();
-        s.draw();
-      });
-      requestAnimationFrame(renderSparkles);
-    }
-    renderSparkles();
-
-    const btnNo = document.getElementById('btn-no');
-    const btnYes = document.getElementById('btn-yes');
-    const teaseQuote = document.getElementById('tease-quote');
-    let dodgeCount = 0;
-    let yesScale = 1;
-
-    const teaseDares = [
-      "I dare you to try clicking No again! 😜",
-      "Almost! But you know this date is happening 😉",
-      "Still trying to dodge? You can't escape great food 🌮",
-      "Admit it, your thumb is itching to click Yes! ✨",
-      "Nice reflexes, but Yes is looking pretty good right now! 🥂",
-      "Error 404: 'No' option not found ⚡"
-    ];
-
-    function evadeButton(e) {
-      if (e) e.preventDefault();
-      dodgeCount++;
-      playTone(320 + Math.random() * 220, 0.05);
-
-      const offsetRange = 130;
-      const randomX = (Math.random() - 0.5) * offsetRange * 2;
-      const randomY = (Math.random() - 0.5) * (offsetRange * 0.9);
-
-      btnNo.style.transform = `translate(${randomX}px, ${randomY}px)`;
-
-      // Grow Yes button slightly
-      yesScale = Math.min(yesScale + 0.07, 1.4);
-      btnYes.style.transform = `scale(${yesScale})`;
-
-      // Dynamic text update
-      teaseQuote.textContent = teaseDares[dodgeCount % teaseDares.length];
-      teaseQuote.style.opacity = '1';
-
-      if (dodgeCount === 1) btnNo.textContent = "Try again? 😏";
-      else if (dodgeCount === 2) btnNo.textContent = "Too slow! ⚡";
-      else if (dodgeCount === 3) btnNo.textContent = "Just click Yes! 🍽️";
-      else if (dodgeCount >= 4) btnNo.textContent = "Defeated 🏳️";
-    }
-
-    btnNo.addEventListener('mouseenter', evadeButton);
-    btnNo.addEventListener('touchstart', evadeButton);
-    btnNo.addEventListener('click', evadeButton);
-
-    function handleAcceptInvite() {
-      playCelebrationChime();
-
-      if (typeof confetti === 'function') {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          colors: ['#d97706', '#f59e0b', '#1e2022', '#ecd5b3'],
-          origin: { y: 0.6 }
-        });
-      }
-
-      const inviteSec = document.getElementById('section-invite');
-      const plannerSec = document.getElementById('section-planner');
-
-      inviteSec.classList.add('opacity-0', 'scale-95');
-      setTimeout(() => {
-        inviteSec.classList.add('hidden');
-        plannerSec.classList.remove('hidden');
-        setTimeout(() => {
-          plannerSec.classList.remove('opacity-0');
-          plannerSec.classList.add('opacity-100');
-
-          // Default date to upcoming weekend / Friday
-          const dateInput = document.getElementById('date-input');
-          const today = new Date();
-          const targetDay = new Date();
-          const dayOfWeek = today.getDay();
-          const daysUntilFriday = (5 - dayOfWeek + 7) % 7 || 7;
-          targetDay.setDate(today.getDate() + daysUntilFriday);
-          
-          dateInput.value = targetDay.toISOString().split('T')[0];
-          dateInput.min = today.toISOString().split('T')[0];
-        }, 50);
-      }, 400);
-    }
-
-    function toggleCustomCuisine(isCustom) {
-      const customBox = document.getElementById('custom-cuisine-box');
-      const customInput = document.getElementById('custom-cuisine-input');
-      if (isCustom) {
-        customBox.classList.remove('hidden');
-        customInput.focus();
-      } else {
-        customBox.classList.add('hidden');
-      }
-    }
-
-    let planData = {};
-
-    function handleFormSubmission(e) {
-      e.preventDefault();
-      playCelebrationChime();
-
-      const form = document.getElementById('plan-form');
-      const formData = new FormData(form);
-
-      const activity = formData.get('activity');
-      let cuisine = formData.get('cuisine');
-      if (cuisine === 'Custom Suggestion') {
-        const customText = document.getElementById('custom-cuisine-input').value.trim();
-        cuisine = customText ? `Suggestion: ${customText}` : "Surprise / Any Cuisine";
-      }
-
-      const dateRaw = document.getElementById('date-input').value;
-      const timeVal = document.getElementById('time-input').value;
-      const dresscode = formData.get('dresscode');
-      const notes = document.getElementById('extra-notes').value.trim();
-
-      // Format human friendly date
-      let formattedDate = dateRaw;
-      try {
-        const d = new Date(dateRaw + 'T00:00:00');
-        formattedDate = d.toLocaleDateString(undefined, {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-          year: 'numeric'
-        });
-      } catch (err) {
-        formattedDate = dateRaw;
-      }
-
-      planData = {
-        activity,
-        cuisine,
-        dateTime: `${formattedDate} @ ${timeVal}`,
-        dresscode,
-        notes: notes || "None (Just excited for the plan!)"
-      };
 
       // Populate summary ticket
-      document.getElementById('ticket-activity').textContent = planData.activity;
-      document.getElementById('ticket-cuisine').textContent = planData.cuisine;
-      document.getElementById('ticket-datetime').textContent = planData.dateTime;
-      document.getElementById('ticket-dresscode').textContent = planData.dresscode;
-      document.getElementById('ticket-note').textContent = `"${planData.notes}"`;
+      document.getElementById('res-adventure').innerText = selectedAdv;
+      document.getElementById('res-cuisine').innerText = selectedCuisine;
+      document.getElementById('res-datetime').innerText = `${selectedDate} at ${selectedTime}`;
+      document.getElementById('res-dress').innerText = selectedDress;
 
-      // Transition views
-      const plannerSec = document.getElementById('section-planner');
-      const ticketSec = document.getElementById('section-ticket');
-
-      plannerSec.classList.remove('opacity-100');
-      plannerSec.classList.add('opacity-0');
-
-      setTimeout(() => {
-        plannerSec.classList.add('hidden');
-        ticketSec.classList.remove('hidden');
-        setTimeout(() => {
-          ticketSec.classList.remove('opacity-0');
-          ticketSec.classList.add('opacity-100');
-          if (typeof confetti === 'function') {
-            confetti({
-              particleCount: 50,
-              spread: 60,
-              colors: ['#d97706', '#f59e0b', '#1e2022'],
-              origin: { y: 0.6 }
-            });
-          }
-        }, 50);
-      }, 400);
-    }
-
-    function copyPlanToClipboard() {
-      playTone(587.33, 0.08);
-      const textToShare = `✨ Date plan locked in!\n\n` +
-        `🎯 Activity: ${planData.activity}\n` +
-        `🍽️ Dinner: ${planData.cuisine}\n` +
-        `⏰ When: ${planData.dateTime}\n` +
-        `👗 Vibe: ${planData.dresscode}\n` +
-        `💬 Notes: ${planData.notes}\n\n` +
-        `Can't wait! ✨`;
-
-      const textarea = document.createElement('textarea');
-      textarea.value = textToShare;
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        showToast("Plan copied! Paste it in our chat ✨");
-        const btnText = document.getElementById('copy-btn-text');
-        btnText.textContent = "Copied to Clipboard! ✨";
-        setTimeout(() => {
-          btnText.textContent = "Copy Plan to Send to Me";
-        }, 2500);
-      } catch (err) {
-        showToast("Could not copy directly. Feel free to screenshot!");
+      if (notes) {
+        document.getElementById('res-notes').innerText = notes;
+        document.getElementById('res-notes-wrap').style.display = 'flex';
       }
-      document.body.removeChild(textarea);
-    }
 
-    function showToast(msg) {
-      const toast = document.getElementById('toast-notify');
-      toast.textContent = msg;
-      toast.classList.remove('opacity-0');
-      toast.classList.add('opacity-100');
-      setTimeout(() => {
-        toast.classList.remove('opacity-100');
-        toast.classList.add('opacity-0');
-      }, 3000);
-    }
+      // Transition to final ticket
+      document.getElementById('planner-view').style.display = 'none';
+      document.getElementById('summary-view').style.display = 'block';
 
-    function editPlan() {
-      playTone(400, 0.08);
-      const ticketSec = document.getElementById('section-ticket');
-      const plannerSec = document.getElementById('section-planner');
-      ticketSec.classList.remove('opacity-100');
-      ticketSec.classList.add('opacity-0');
-      setTimeout(() => {
-        ticketSec.classList.add('hidden');
-        plannerSec.classList.remove('hidden');
-        setTimeout(() => {
-          plannerSec.classList.remove('opacity-0');
-          plannerSec.classList.add('opacity-100');
-        }, 50);
-      }, 300);
-    }
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.5 }
+      });
+    });
+
+    // Copy to clipboard fallback
+    document.getElementById('copy-btn').addEventListener('click', () => {
+      const adv = document.getElementById('res-adventure').innerText;
+      const cuisine = document.getElementById('res-cuisine').innerText;
+      const dt = document.getElementById('res-datetime').innerText;
+      const dress = document.getElementById('res-dress').innerText;
+      const notes = document.getElementById('notes-input').value.trim();
+
+      const summary = `Date Plan Confirmed ✨\n\n• Adventure: ${adv}\n• Dinner: ${cuisine}\n• When: ${dt}\n• Vibe: ${dress}` + (notes ? `\n• Notes: ${notes}` : "");
+
+      navigator.clipboard.writeText(summary).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.innerText = "✓ Copied to Clipboard!";
+        setTimeout(() => { btn.innerText = "📋 Copy Plan Summary"; }, 2500);
+      });
+    });
   </script>
 </body>
 </html>
