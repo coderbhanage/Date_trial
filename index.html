@@ -441,4 +441,316 @@
       </div>
       <div class="options-grid" id="cuisine-options">
         <button class="chip-btn" data-val="Italian">🍝 Italian</button>
-        <button class="chip-
+        <button class="chip-btn" data-val="Thai">🍜 Thai</button>
+        <button class="chip-btn" data-val="Mexican">🌮 Mexican</button>
+        <button class="chip-btn" data-val="Other">✨ Other / Suggestion</button>
+      </div>
+      <div id="cuisine-custom-wrap" style="display: none; margin-top: 10px;">
+        <input type="text" id="cuisine-custom" class="input-field" placeholder="What cuisine are you craving?">
+      </div>
+    </div>
+
+    <!-- Date & Time (Starting from 4:00 PM) -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>3. When are you free?</span>
+        <span class="section-tag">Time</span>
+      </div>
+      <div class="datetime-row">
+        <div>
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px;">Select Date</label>
+          <input type="date" id="date-input" class="input-field">
+        </div>
+        <div>
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px;">Select Start Time</label>
+          <select id="time-input" class="input-field">
+            <option value="4:00 PM">4:00 PM (Full afternoon & dinner)</option>
+            <option value="4:30 PM">4:30 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+            <option value="5:30 PM">5:30 PM</option>
+            <option value="6:00 PM">6:00 PM</option>
+            <option value="Flexible">I'm flexible with timing</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual Dress Code -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>4. Dress Code Vibe</span>
+        <span class="section-tag">Style</span>
+      </div>
+      <div class="cards-grid" id="dress-options">
+        <div class="dress-card" data-val="Casuals">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&q=80" alt="Casuals">
+          <div class="dress-card-info">
+            <div class="dress-card-title">Casuals</div>
+            <div class="dress-card-desc">Jeans & clean sneakers</div>
+          </div>
+        </div>
+        <div class="dress-card" data-val="Semi-Formals">
+          <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=400&q=80" alt="Semi Formals">
+          <div class="dress-card-info">
+            <div class="dress-card-title">Semi-Formals</div>
+            <div class="dress-card-desc">Elevated, chic & sharp</div>
+          </div>
+        </div>
+        <div class="dress-card" data-val="Cozy and low key">
+          <img src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=400&q=80" alt="Cozy">
+          <div class="dress-card-info">
+            <div class="dress-card-title">Cozy and low key</div>
+            <div class="dress-card-desc">Sweater weather comfort</div>
+          </div>
+        </div>
+        <div class="dress-card" data-val="You pick, I match">
+          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=400&q=80" alt="Match">
+          <div class="dress-card-info">
+            <div class="dress-card-title">You pick, I match</div>
+            <div class="dress-card-desc">Whatever you feel best in</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional Notes -->
+    <div class="section-group">
+      <div class="section-label">
+        <span>5. Anything else I should know?</span>
+        <span class="section-tag" style="opacity: 0.7;">Optional</span>
+      </div>
+      <textarea id="notes-input" class="input-field notes-input" placeholder="Dietary restrictions, song requests, or fun ideas..."></textarea>
+    </div>
+
+    <button class="btn btn-yes" id="submit-plan-btn" style="width: 100%; padding: 16px;">
+      Lock In Our Date! 🚀
+    </button>
+    <div class="status-msg" id="status-msg"></div>
+  </div>
+
+  <!-- STEP 3: SUMMARY CONFIRMATION VIEW (NO COPY BUTTON) -->
+  <div class="container summary-view" id="summary-view">
+    <div class="badge">🎉 It's Official!</div>
+    <h1 class="title">Can't Wait!</h1>
+    <p class="subtitle">Your date plan has been locked in and sent!</p>
+
+    <div class="ticket-card">
+      <div class="ticket-item">
+        <span class="ticket-label">Adventure</span>
+        <span class="ticket-val" id="res-adventure">-</span>
+      </div>
+      <div class="ticket-item">
+        <span class="ticket-label">Dinner Cuisine</span>
+        <span class="ticket-val" id="res-cuisine">-</span>
+      </div>
+      <div class="ticket-item">
+        <span class="ticket-label">Date & Time</span>
+        <span class="ticket-val" id="res-datetime">-</span>
+      </div>
+      <div class="ticket-item">
+        <span class="ticket-label">Dress Code</span>
+        <span class="ticket-val" id="res-dress">-</span>
+      </div>
+      <div class="ticket-item" id="res-notes-wrap" style="display:none;">
+        <span class="ticket-label">Notes</span>
+        <span class="ticket-val" id="res-notes">-</span>
+      </div>
+    </div>
+
+    <div class="sent-banner">
+      ✓ Plan successfully sent! See you then ✨
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 🔑 WEB3FORMS CONFIGURATION
+    // Paste your Web3Forms access key below:
+    // ==========================================
+    const WEB3FORMS_ACCESS_KEY = "PASTE_YOUR_ACCESS_KEY_HERE";
+
+    // Set default date to this upcoming Saturday
+    const dateInput = document.getElementById('date-input');
+    const today = new Date();
+    const daysUntilSat = (6 - today.getDay() + 7) % 7 || 7;
+    const nextSat = new Date(today);
+    nextSat.setDate(today.getDate() + daysUntilSat);
+    dateInput.value = nextSat.toISOString().split('T')[0];
+
+    // Background Canvas Particle Animation
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.4 + 0.1
+      });
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(229, 169, 108, ${p.alpha})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // Runaway "No" Button Logic
+    const noBtn = document.getElementById('no-btn');
+    const yesBtn = document.getElementById('yes-btn');
+    const dareText = document.getElementById('dare-text');
+
+    const darePhrases = [
+      "🎯 Nice try, but you can't click it! 😂",
+      "⚡ Faster than that! Bet you can't catch it.",
+      "😼 Just hit Yes already, it's right there!",
+      "💨 Still trying? I admire the persistence!",
+      "👀 We both know your finger is heading for Yes!"
+    ];
+    let dareIndex = 0;
+
+    function dodgeNoButton() {
+      const maxX = 130;
+      const maxY = 60;
+      const randX = (Math.random() - 0.5) * (maxX * 2);
+      const randY = (Math.random() - 0.5) * (maxY * 2);
+      noBtn.style.transform = `translate(${randX}px, ${randY}px)`;
+      dareText.innerText = darePhrases[dareIndex % darePhrases.length];
+      dareIndex++;
+    }
+
+    noBtn.addEventListener('mouseenter', dodgeNoButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dodgeNoButton();
+    });
+
+    // Yes Button Click Transition
+    yesBtn.addEventListener('click', () => {
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.6 }
+      });
+      document.getElementById('hero-view').style.display = 'none';
+      document.getElementById('planner-view').style.display = 'block';
+    });
+
+    // Single-select helper for chips/cards
+    function setupSingleSelect(containerId, isCard = false) {
+      const container = document.getElementById(containerId);
+      const selector = isCard ? '.dress-card' : '.chip-btn';
+      container.addEventListener('click', (e) => {
+        const item = e.target.closest(selector);
+        if (!item) return;
+        container.querySelectorAll(selector).forEach(el => el.classList.remove('selected'));
+        item.classList.add('selected');
+
+        if (containerId === 'cuisine-options') {
+          const isOther = item.getAttribute('data-val') === 'Other';
+          document.getElementById('cuisine-custom-wrap').style.display = isOther ? 'block' : 'none';
+        }
+      });
+    }
+
+    setupSingleSelect('adventure-options');
+    setupSingleSelect('cuisine-options');
+    setupSingleSelect('dress-options', true);
+
+    // Select defaults
+    document.querySelector('#adventure-options .chip-btn').classList.add('selected');
+    document.querySelector('#cuisine-options .chip-btn').classList.add('selected');
+    document.querySelector('#dress-options .dress-card').classList.add('selected');
+
+    // Submit Plan Logic (Web3Forms API)
+    const submitBtn = document.getElementById('submit-plan-btn');
+    const statusMsg = document.getElementById('status-msg');
+
+    submitBtn.addEventListener('click', async () => {
+      const selectedAdv = document.querySelector('#adventure-options .chip-btn.selected')?.getAttribute('data-val') || 'Spontaneous';
+      let selectedCuisine = document.querySelector('#cuisine-options .chip-btn.selected')?.getAttribute('data-val') || 'Italian';
+      if (selectedCuisine === 'Other') {
+        const customInput = document.getElementById('cuisine-custom').value.trim();
+        if (customInput) selectedCuisine = customInput;
+      }
+      const selectedDate = document.getElementById('date-input').value;
+      const selectedTime = document.getElementById('time-input').value;
+      const selectedDress = document.querySelector('#dress-options .dress-card.selected')?.getAttribute('data-val') || 'Casuals';
+      const notes = document.getElementById('notes-input').value.trim();
+
+      submitBtn.disabled = true;
+      statusMsg.innerText = "Locking in our plans...";
+
+      // Automated background form submission to your email
+      if (WEB3FORMS_ACCESS_KEY && WEB3FORMS_ACCESS_KEY !== "PASTE_YOUR_ACCESS_KEY_HERE") {
+        try {
+          await fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_ACCESS_KEY,
+              subject: "New Date Invitation Response! 🥂",
+              Adventure: selectedAdv,
+              Dinner_Cuisine: selectedCuisine,
+              Date: selectedDate,
+              Time: selectedTime,
+              Dress_Code: selectedDress,
+              Notes: notes || "None"
+            })
+          });
+        } catch (err) {
+          console.error("Form submission error:", err);
+        }
+      }
+
+      // Populate summary ticket
+      document.getElementById('res-adventure').innerText = selectedAdv;
+      document.getElementById('res-cuisine').innerText = selectedCuisine;
+      document.getElementById('res-datetime').innerText = `${selectedDate} at ${selectedTime}`;
+      document.getElementById('res-dress').innerText = selectedDress;
+
+      if (notes) {
+        document.getElementById('res-notes').innerText = notes;
+        document.getElementById('res-notes-wrap').style.display = 'flex';
+      }
+
+      // Transition to final ticket
+      document.getElementById('planner-view').style.display = 'none';
+      document.getElementById('summary-view').style.display = 'block';
+
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.5 }
+      });
+    });
+  </script>
+</body>
+</html>
